@@ -149,6 +149,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       onChange: _providedOnChange,
       onClose: _providedOnClose,
       onAnimate: _providedOnAnimate,
+      onUpdate: _providedOnUpdate,
 
       // private
       $modal = false,
@@ -267,6 +268,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       State.UNDETERMINED
     );
     //#endregion
+    // onUpdate handler - stable JS callback used from UI thread via runOnJS
+    const handleOnUpdate = useStableCallback((translateY: number) => {
+      if (!_providedOnUpdate) {
+        return;
+      }
+
+      _providedOnUpdate(translateY);
+    });
 
     //#region hooks variables
     // keyboard
